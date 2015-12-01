@@ -56,6 +56,3 @@ class Floor_Directions():
         result = self.parse_directions(directions, starting_floor)
 
         print result
-
-
-Floor_Directions('input.txt')
