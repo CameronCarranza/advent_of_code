@@ -16,24 +16,37 @@ class Floor_Directions():
 
     def parse_directions(self, directions, starting_floor):
 
-        current_floor = starting_floor
+        results = {
+            'current_floor': starting_floor,
+            'first_basement_charpos': 0
+        }
+
+        string_index = 0
+        entered_basement = False
 
         for char in directions:
 
+            string_index += 1
+
             if char == '(':
                 # Go up one floor
-                current_floor += 1
+                results['current_floor'] += 1
 
             elif char == ')':
                 # Go down one floor
-                current_floor -= 1
+                results['current_floor'] -= 1
+
+                # Determine what character in directions basement is first entered at
+                if results['current_floor'] == -1 and entered_basement == False:
+                    entered_basement = True
+                    results['first_basement_charpos'] = string_index
 
             else:
                 # Break if a character other than ( or )
                 print "Invalid Character detected, stopping."
                 sys.exit()
 
-        return current_floor
+        return results
 
 
     def __init__(self, file, starting_floor=0):
