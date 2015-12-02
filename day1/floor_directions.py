@@ -53,6 +53,4 @@ class Floor_Directions():
 
         directions = self.read_file(file)
 
-        result = self.parse_directions(directions, starting_floor)
-
-        print result
+        self.result = self.parse_directions(directions, starting_floor)
