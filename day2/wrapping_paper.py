@@ -26,7 +26,10 @@ class Wrapping_Paper():
 
     def calculate_sqft(self, lwh_array):
 
-        total_sqft = 0
+        results = {
+            "total_sqft": 0,
+            "total_ribbon_feet": 0
+        }
 
         # Get individual lwh sets
         for record in lwh_array:
@@ -40,21 +43,39 @@ class Wrapping_Paper():
             hl = height*length
 
             # Determine smallest size
-            smallest = min([lw, wh, hl])
+            lwh_array_mod = [length, width, height]
+             
+            # Find smallest
+            smallest = min(lwh_array_mod)
+
+            # Remove smallest from array
+            lwh_array_mod.remove(smallest)
+
+            # Find second smallest
+            second_smallest = min(lwh_array_mod)
+
+            # Get ribbon sizes
+            ribbon_wrap = smallest + smallest + second_smallest + second_smallest
+            bow_size = length * width * height
+
+            results['total_ribbon_feet'] += ribbon_wrap + bow_size
             
-            # ( 2*l*w + 2*w*h + 2*h*l )
+            # Get Wrapping paper sizes
             surface_area = 2*lw + 2*wh + 2*hl
 
-            total_sqft += surface_area + smallest
+            results['total_sqft'] += surface_area + smallest
 
-        return total_sqft
+        return results
 
 
     def __init__(self, input_file):
 
         lwh_array = self.read_file(input_file)
 
-        self.total = self.calculate_sqft(lwh_array)
+        calc = self.calculate_sqft(lwh_array)
+
+        self.paper_total = calc['total_sqft']
+        self.ribbon_total = calc['total_ribbon_feet']
 
 
         
